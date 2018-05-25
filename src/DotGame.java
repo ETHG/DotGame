@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Scanner;
 
 public class DotGame {
@@ -5,11 +6,15 @@ public class DotGame {
         int players = players();
         Board board = new Board(boardSize(), players);
         Logic logicSystem = new Logic(players);
-        board.initPlayers();
-        board.init();
+        EventQueue.invokeLater(new Runnable() { public void run() {
+            board.initPlayers();
+            board.init();
+        } });
+
     }
 
     public static int players() {
+
         Scanner console = new Scanner(System.in);
 
         System.out.print("How many players will be playing this game? ");

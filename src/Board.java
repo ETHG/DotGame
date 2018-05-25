@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Scanner;
 
 public class Board {
@@ -54,9 +52,9 @@ public class Board {
 
         for (int row = 0; row < size; row++) {
             for (int column = 0; column < size; column++) {
-                Panel panel = new Panel();
-                //pixelPanel.addMouseListener(new ColorListener(pixelPanel));
-                panel.add(panel);
+                Panel newPanel = new Panel();
+                newPanel.addMouseListener(new ClickListener(newPanel));
+                panel.add(newPanel);
             }
         }
         return panel;
