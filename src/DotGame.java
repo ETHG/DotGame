@@ -2,7 +2,9 @@ import java.util.Scanner;
 
 public class DotGame {
     public static void main(String[] args) {
-        Board board = new Board(boardSize(), players());
+        int players = players();
+        Board board = new Board(boardSize(), players);
+        Logic logicSystem = new Logic(players);
         board.initPlayers();
         board.init();
     }

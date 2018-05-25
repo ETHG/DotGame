@@ -1,11 +1,15 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Scanner;
 
 public class Board {
 
     private int size;
-    private int playerCount;
+    public int playerCount;
     private Player[] players;
+    public int[][] grid = new int[size][size];
     //private JFrame frame;
     //private ArrayList<Player> playerArrayList;
 
@@ -13,12 +17,12 @@ public class Board {
         this.playerCount = players;
         this.size = size;
         this.players = new Player[players];
-        //this.playerArrayList = new ArrayList<>();
     }
 
     public Board() {
         playerCount = 2;
         size = 10;
+        players = new Player[playerCount];
     }
 
     public void initPlayers() {
@@ -27,9 +31,7 @@ public class Board {
         for (int i = 0; i < playerCount; i++) {
             System.out.print("What is the name of player " + (1+i) + "? ");
 
-            players[i] = new Player(console.next());
-
-            //playerArrayList.add(console.next());
+            players[i] = new Player(console.next(), i);
         }
     }
 
@@ -37,8 +39,26 @@ public class Board {
         JFrame frame = new JFrame("FrameDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        //frame.add(something);
+        frame.add(createGrid());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+//        for (int i = 1; i <= size; i++) {
+//
+//        }
+    }
+
+    private JPanel createGrid() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(size, size, 0, 0));
+
+        for (int row = 0; row < size; row++) {
+            for (int column = 0; column < size; column++) {
+                Panel panel = new Panel();
+                //pixelPanel.addMouseListener(new ColorListener(pixelPanel));
+                panel.add(panel);
+            }
+        }
+        return panel;
     }
 }
