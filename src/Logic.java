@@ -6,17 +6,16 @@ public class Logic {
     }
 
     int turn = 0;
-    public int getTurn() {
-        turn++;
-        return turn;
-    }
-
-    public void something() {
-        for (int t = 1; t <= players; t++) {
-
+    public int getTurn(boolean gotSquare) {
+        if (gotSquare = true)
+            return turn;
+        else {
+            turn++;
+            if (turn > players)
+                return turn%players;
+            else
+                return turn;
         }
-    }
-
-    private void turn() {
+        //Todo make it so that when a player gets a square, they get an extra turn
     }
 }
