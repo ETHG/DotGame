@@ -6,13 +6,11 @@ public class DotGame {
         int players = players();
         Board board = new Board(boardSize(), players);
         Logic logicSystem = new Logic(players);
-        EventQueue.invokeLater(new Runnable() { public void run() {
-            board.initPlayers();
-            board.init();
-        } });
-
+        board.initPlayers();
+        board.init();
     }
 
+    //Gets user input for how many players
     public static int players() {
 
         Scanner console = new Scanner(System.in);
@@ -24,6 +22,7 @@ public class DotGame {
         return players;
     }
 
+    //Gets user input for board size
     public static int boardSize() {
         Scanner console = new Scanner(System.in);
 

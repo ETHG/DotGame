@@ -26,11 +26,19 @@ public class Player {
         points += 1;
     }
 
+    public void addPoints(int points) {
+        points += points;
+    }
+
     public String getName() {
         return name;
     }
 
     public int getId() {
         return id;
+    }
+
+    public Color getPlayerColor() {
+        return playerColor;
     }
 }

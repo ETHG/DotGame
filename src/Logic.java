@@ -16,6 +16,5 @@ public class Logic {
             else
                 return turn;
         }
-        //Todo make it so that when a player gets a square, they get an extra turn
     }
 }
