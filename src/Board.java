@@ -47,26 +47,35 @@ public class Board {
     private JPanel createGrid() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(size, size, 0, 0));
-        Player thisPlayer = players[0];
-        for (int evenR = 0; 0 < size; evenR+=2) {
+
+        for (int evenR = 2; evenR < size; evenR+=2) {
+            //Horizontal lines
             for (int evenC = 0; evenC < size; evenC+=2) {
                 Panel newHPanel = new Panel(3);
+                newHPanel.setPreferredSize(new Dimension(20, 5));
                 panel.add(newHPanel);
                 System.out.println("created x" + evenC);
             }
+            //Little boxes, between lines (make it black)
             for (int oddC = 1; oddC < size; oddC+=2) {
                 Panel newMidBoxPanel = new Panel(4);
+                newMidBoxPanel.setPreferredSize(new Dimension(5, 5));
                 panel.add(newMidBoxPanel);
             }
         }
-        for (int oddR = 1; 0 < size; oddR+=2f) {
+        for (int oddR = 1; oddR < size; oddR+=2f) {
+            //Verticle lines
             for (int evenC = 0; evenC < size; evenC+=2) {
                 Panel newVPanel = new Panel(2);
+                newVPanel.setPreferredSize(new Dimension(5, 20));
                 panel.add(newVPanel);
             }
+            //Middle panel, eventually to be filled w/ given players color
             for (int oddC = 1; oddC < size; oddC+=2) {
                 Panel newFillBoxPanel = new Panel(1);
+                newFillBoxPanel.setPreferredSize(new Dimension(20, 20));
                 panel.add(newFillBoxPanel);
+                System.out.println("test v2: " + oddC );
             }
         }
 

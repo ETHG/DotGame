@@ -21,7 +21,7 @@ public class Panel extends JPanel {
             this.setPreferredSize(new Dimension(5, 5));
         }
         this.backgroundColor = Color.WHITE;
-        //this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.setPreferredSize(new Dimension(10, 20));
     }
 
