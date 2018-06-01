@@ -9,14 +9,13 @@ public class Board {
     private Player[] players;
     public int[][] grid = new int[size][size];
     private Logic logic;
-    //private JFrame frame;
-    //private ArrayList<Player> playerArrayList;
+
 
     public Board(int size, int players) {
         this.playerCount = players;
         this.size = size;
         this.players = new Player[players];
-        this.logic = new Logic(players);
+        this.logic = new Logic(this.players);
     }
 
     public Board() {
@@ -36,7 +35,7 @@ public class Board {
     }
 
     public void init() {
-        JFrame frame = new JFrame("FrameDemo");
+        JFrame frame = new JFrame("Dot Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.add(createGrid());
@@ -48,49 +47,48 @@ public class Board {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(size, size, 0, 0));
 
-        for (int evenR = 2; evenR < size; evenR+=2) {
-            //Horizontal lines
-            for (int evenC = 0; evenC < size; evenC+=2) {
-                Panel newHPanel = new Panel(3);
-                newHPanel.setPreferredSize(new Dimension(20, 5));
-                panel.add(newHPanel);
-                System.out.println("created x" + evenC);
+        for (int r = 1; r < size; r++) {
+            for (int c = 1; c < size; c++) {
+                if (r%2 == 1) {
+                    if (c%2 == 0) {
+                        JButton button = new JButton();
+//                        button.setOpaque(false);
+//                        button.setContentAreaFilled(false);
+//                        button.setBorderPainted(false);
+                        button.addActionListener(e -> {
+                            button.setBackground(logic.determineColor());
+                        });
+                        panel.add(button);
+                    } else {
+                        JPanel newPanel = new JPanel();
+                        //Panel newPanel = new Panel();
+                        panel.add(newPanel);
+                        if (r%2 == 1) {
+                            newPanel.setBackground(Color.BLACK);
+                        }
+                    }
+                } else {
+                    if (c%2 == 1) {
+                        JButton button = new JButton();
+//                        button.setOpaque(false);
+//                        button.setContentAreaFilled(false);
+//                        button.setBorderPainted(false);
+                        button.addActionListener(e -> {
+                            button.setBackground(logic.determineColor());
+                            //logic.getTurn(false);
+                        });
+                        panel.add(button);
+                    } else {
+                        JPanel newPanel = new JPanel();
+                        panel.add(newPanel);
+                        if (r%2 == 1) {
+                            newPanel.setBackground(Color.BLACK);
+                        }
+                    }
+                }
             }
-            //Little boxes, between lines (make it black)
-            for (int oddC = 1; oddC < size; oddC+=2) {
-                Panel newMidBoxPanel = new Panel(4);
-                newMidBoxPanel.setPreferredSize(new Dimension(5, 5));
-                panel.add(newMidBoxPanel);
-            }
-        }
-        for (int oddR = 1; oddR < size; oddR+=2f) {
-            //Verticle lines
-            for (int evenC = 0; evenC < size; evenC+=2) {
-                Panel newVPanel = new Panel(2);
-                newVPanel.setPreferredSize(new Dimension(5, 20));
-                panel.add(newVPanel);
-            }
-            //Middle panel, eventually to be filled w/ given players color
-            for (int oddC = 1; oddC < size; oddC+=2) {
-                Panel newFillBoxPanel = new Panel(1);
-                newFillBoxPanel.setPreferredSize(new Dimension(20, 20));
-                panel.add(newFillBoxPanel);
-                System.out.println("test v2: " + oddC );
-            }
-        }
 
-//        for (int row = 0; row < size; row++) {
-//            for (int column = 0; column < size; column++) {
-//                Panel newPanel = new Panel();
-////                for (int i = 1; i < playerCount; i++) {
-//////                    if (i == players[i].getId()) {
-//////                        thisPlayer = players[i];
-//////                    }
-//////                }
-//////                newPanel.addMouseListener(new ClickListener(newPanel, thisPlayer));
-//                panel.add(newPanel);
-//            }
-//        }
+        }
         return panel;
     }
 }

@@ -1,7 +1,9 @@
-public class Logic {
-    int players;
+import java.awt.*;
 
-    public Logic(int players) {
+public class Logic {
+    private Player[] players;
+
+    public Logic(Player[] players) {
         this.players = players;
     }
 
@@ -11,10 +13,21 @@ public class Logic {
             return turn;
         else {
             turn++;
-            if (turn > players)
-                return turn%players;
+            if (turn > players.length)
+                return turn%players.length;
             else
                 return turn;
         }
+    }
+
+    public Color determineColor() {
+        int turn = getTurn(false);
+        Color color = new Color(Color.TRANSLUCENT);
+        for (int i = 0; i < players.length; i++) {
+            if (turn == players[i].getId()) {
+                color = players[i].getPlayerColor();
+            }
+        }
+        return color;
     }
 }
