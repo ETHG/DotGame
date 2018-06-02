@@ -26,7 +26,7 @@ public class DotGame {
         Scanner console = new Scanner(System.in);
 
         System.out.print("How big do you want the board to be? ");
-        int size = console.nextInt();
+        int size = console.nextInt() * 2;
         System.out.println("");
 
         return size;
