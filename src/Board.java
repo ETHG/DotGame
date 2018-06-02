@@ -63,9 +63,7 @@ public class Board {
                         JPanel newPanel = new JPanel();
                         //Panel newPanel = new Panel();
                         panel.add(newPanel);
-                        if (r%2 == 1) {
-                            newPanel.setBackground(Color.BLACK);
-                        }
+                        newPanel.setBackground(Color.BLACK);
                     }
                 } else {
                     if (c%2 == 1) {
@@ -81,9 +79,6 @@ public class Board {
                     } else {
                         JPanel newPanel = new JPanel();
                         panel.add(newPanel);
-                        if (r%2 == 1) {
-                            newPanel.setBackground(Color.BLACK);
-                        }
                     }
                 }
             }
