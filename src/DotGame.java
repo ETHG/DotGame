@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import java.util.Scanner;
 
@@ -11,24 +12,19 @@ public class DotGame {
 
     //Gets user input for how many players
     public static int players() {
+        String players = JOptionPane.showInputDialog("How many players will be playing this game? ");
 
-        Scanner console = new Scanner(System.in);
+        int parsedPlayerInt = Integer.parseInt(players);
 
-        System.out.print("How many players will be playing this game? ");
-        int players = console.nextInt();
-        System.out.println("");
-
-        return players;
+        return parsedPlayerInt;
     }
 
     //Gets user input for board size
     public static int boardSize() {
-        Scanner console = new Scanner(System.in);
+        String size = JOptionPane.showInputDialog("How big do you want the board to be? ");
 
-        System.out.print("How big do you want the board to be? ");
-        int size = console.nextInt() * 2;
-        System.out.println("");
+        int parsedSizeInt = Integer.parseInt(size) *2;
 
-        return size;
+        return parsedSizeInt;
     }
 }

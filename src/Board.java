@@ -25,11 +25,9 @@ public class Board {
     }
 
     public void initPlayers() {
-        Scanner console = new Scanner(System.in);
-
         for (int i = 0; i < playerCount; i++) {
-            System.out.print("What is the name of player " + (1+i) + "? ");
-            players[i] = new Player(console.next(), i);
+            String player = JOptionPane.showInputDialog("What is the name of player " + (1+i) + "? ");
+            players[i] = new Player(player, i);
         }
     }
 
@@ -45,7 +43,7 @@ public class Board {
 
     private JPanel createGrid() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(size, size, 0, 0));
+        panel.setLayout(new GridLayout(size, size));
 
         for (int r = 1; r < size; r++) {
             for (int c = 1; c < size; c++) {
@@ -74,7 +72,6 @@ public class Board {
                     }
                 }
             }
-
         }
         return panel;
     }
