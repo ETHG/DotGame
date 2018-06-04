@@ -41,6 +41,7 @@ public class Board {
         frame.add(createGrid());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setSize(700, 700);
     }
 
     private JPanel createGrid() {
