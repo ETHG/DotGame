@@ -29,7 +29,6 @@ public class Board {
 
         for (int i = 0; i < playerCount; i++) {
             System.out.print("What is the name of player " + (1+i) + "? ");
-
             players[i] = new Player(console.next(), i);
         }
     }
@@ -53,28 +52,20 @@ public class Board {
                 if (r%2 == 1) {
                     if (c%2 == 0) {
                         JButton button = new JButton();
-//                        button.setOpaque(false);
-//                        button.setContentAreaFilled(false);
-//                        button.setBorderPainted(false);
                         button.addActionListener(e -> {
                             button.setBackground(logic.determineColor());
                         });
                         panel.add(button);
                     } else {
                         JPanel newPanel = new JPanel();
-                        //Panel newPanel = new Panel();
                         panel.add(newPanel);
                         newPanel.setBackground(Color.BLACK);
                     }
                 } else {
                     if (c%2 == 1) {
                         JButton button = new JButton();
-//                        button.setOpaque(false);
-//                        button.setContentAreaFilled(false);
-//                        button.setBorderPainted(false);
                         button.addActionListener(e -> {
                             button.setBackground(logic.determineColor());
-                            //logic.getTurn(false);
                         });
                         panel.add(button);
                     } else {
