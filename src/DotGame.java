@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class DotGame {
     public static void main(String[] args) {
+        setLookAndFeel();
         int players = players();
         Board board = new Board(boardSize(), players);
         board.initPlayers();
@@ -26,5 +27,20 @@ public class DotGame {
         int parsedSizeInt = Integer.parseInt(size) *2;
 
         return parsedSizeInt;
+    }
+
+    public static void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getCrossPlatformLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+        }
+        catch (ClassNotFoundException e) {
+        }
+        catch (InstantiationException e) {
+        }
+        catch (IllegalAccessException e) {
+        }
     }
 }
