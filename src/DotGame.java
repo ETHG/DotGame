@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class DotGame {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         setLookAndFeel();
         int players = players();
         Board board = new Board(boardSize(), players);
@@ -29,18 +29,7 @@ public class DotGame {
         return parsedSizeInt;
     }
 
-    public static void setLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(
-                    UIManager.getCrossPlatformLookAndFeelClassName());
-        }
-        catch (UnsupportedLookAndFeelException e) {
-        }
-        catch (ClassNotFoundException e) {
-        }
-        catch (InstantiationException e) {
-        }
-        catch (IllegalAccessException e) {
-        }
+    public static void setLookAndFeel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
     }
 }
