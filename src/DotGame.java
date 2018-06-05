@@ -1,6 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
-import java.util.Scanner;
 
 public class DotGame {
     public static void main(String[] args) {

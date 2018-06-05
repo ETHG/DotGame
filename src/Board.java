@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
 
 public class Board {
 
@@ -18,12 +17,14 @@ public class Board {
         this.logic = new Logic(this.players);
     }
 
+    //Default constructor if size/players are left blank
     public Board() {
         playerCount = 2;
         size = 10;
         players = new Player[playerCount];
     }
 
+    //Populates the array of players with player objects
     public void initPlayers() {
         for (int i = 0; i < playerCount; i++) {
             String player = JOptionPane.showInputDialog("What is the name of player " + (1+i) + "? ");
@@ -31,6 +32,7 @@ public class Board {
         }
     }
 
+    //Creates the frame;
     public void init() {
         JFrame frame = new JFrame("Dot Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,6 +43,7 @@ public class Board {
         frame.setSize(700, 700);
     }
 
+    //Populates the frame w/ panels/etc
     private JPanel createGrid() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(size, size));
