@@ -91,7 +91,8 @@ public class Board {
         button.addActionListener(e -> {
             button.setBackground(logic.determineColor());
             grid[temp[0]][temp[1]] = 1;
-            logic.getTurn(checkForSquares(temp[0], temp[1]));
+            if (!checkForSquares(temp[0], temp[1]))
+                logic.advanceTurn();
         });
         panel.add(button);
     }
