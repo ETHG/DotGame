@@ -7,8 +7,9 @@ public class Logic {
         this.players = players;
     }
 
-    int turn = 0;
+    //Calculates whos turn it is, adding one to advance the turn, unless the player gets a point.
     public int getTurn(boolean gotSquare) {
+        int turn = 0;
         if (gotSquare = true)
             return turn;
         else {
@@ -20,6 +21,7 @@ public class Logic {
         }
     }
 
+    //Determines what a given players color is, as set in their object creation.
     public Color determineColor() {
         int turn = getTurn(false);
         Color color = new Color(Color.TRANSLUCENT);
