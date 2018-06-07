@@ -60,6 +60,10 @@ public class Board {
                         JPanel newPanel = new JPanel();
                         panel.add(newPanel);
                         newPanel.setBackground(Color.BLACK);
+                        if (r <= grid.length-1 && c <= grid.length-1) {
+                            System.out.println("set 2");
+                            grid[r][c] = 2;
+                        }
                     }
                 } else {
                     if (c%2 == 1) {
@@ -67,6 +71,7 @@ public class Board {
                     } else {
                         JPanel newPanel = new JPanel();
                         panel.add(newPanel);
+                        grid[r][c] = 3;
                     }
                 }
             }
@@ -85,23 +90,40 @@ public class Board {
         temp[1] = c-1;
         button.addActionListener(e -> {
             button.setBackground(logic.determineColor());
-            System.out.println("");
             grid[temp[0]][temp[1]] = 1;
-            checkForSquares(temp[0], temp[1]);
-            //System.out.println("r: " + temp[0] + " c: " + temp[1]);
-            reprint();
+            logic.getTurn(checkForSquares(temp[0], temp[1]));
         });
         panel.add(button);
     }
 
-    public void checkForSquares(int r, int c) {
-        System.out.println("" + r + " " + c);
-
-        if (r >= grid.length || c <= 0 || c >= grid.length) {
-            System.out.println("Side thing found, not checking.");
-        } else if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1) {
-            System.out.println("" + r + " " + c);
-            System.out.println("found square");
+    public boolean checkForSquares(int r, int c) {
+        if (r <= 0) {
+            if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1) {
+                System.out.println("found square! v1");
+                return true;
+            }
+        } else if (r == grid.length-1) {
+            if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1) {
+                System.out.println("found square v2");
+                return true;
+            }
+        } else if (c == grid.length-1) {
+            if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1) {
+                System.out.println("found square v3");
+                return true;
+            }
+        } else if (c == 0) {
+            if (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1) {
+                System.out.println("found square v4");
+                return true;
+            }
+        } else {
+            if ((grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1 && grid[r+1][c] != 3) || (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1 && grid[r-1][c] != 3) ||
+                    (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1 && grid[r][c-1] != 3) || (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1 && grid[r][c+1] != 3)) {
+                System.out.println("found square! v5");
+                return true;
+            }
         }
+        return false;
     }
 }
