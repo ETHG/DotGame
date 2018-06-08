@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
@@ -9,6 +10,8 @@ public class Board {
     private Player[] players;
     public int[][] grid;
     private Logic logic;
+    private ArrayList<Panel> panelList;
+    //private JPanel[] panelList;
 
 
     public Board(int size, int players) {
@@ -17,6 +20,8 @@ public class Board {
         this.players = new Player[players];
         this.logic = new Logic(this.players);
         this.grid =  new int[size-1][size-1];
+        this.panelList = new ArrayList<>();
+        //this.panelList = new JPanel[size];
     }
 
     //Default constructor if size/players are left blank
@@ -52,7 +57,6 @@ public class Board {
 
         for (int r = 1; r < size; r++) {
             for (int c = 1; c < size; c++) {
-                //System.out.println("created r/c: " + r + " " + c);
                 if (r%2 == 1) {
                     if (c%2 == 0) {
                         makeButton(r, c, panel);
@@ -61,7 +65,6 @@ public class Board {
                         panel.add(newPanel);
                         newPanel.setBackground(Color.BLACK);
                         if (r <= grid.length-1 && c <= grid.length-1) {
-                            System.out.println("set 2");
                             grid[r][c] = 2;
                         }
                     }
@@ -69,8 +72,11 @@ public class Board {
                     if (c%2 == 1) {
                         makeButton(r, c, panel);
                     } else {
-                        JPanel newPanel = new JPanel();
-                        panel.add(newPanel);
+                        //JPanel newPanel = new JPanel();
+                        Panel newCustomPanel = new Panel(r,c);
+                        panel.add(newCustomPanel);
+                        panelList.add(newCustomPanel);
+
                         grid[r][c] = 3;
                     }
                 }
@@ -78,10 +84,7 @@ public class Board {
         }
         return panel;
     }
-    public void reprint() {
-        for (int i = 0; i < grid.length; i++)
-            System.out.println(Arrays.toString(grid[i]));
-    }
+
 
     public void makeButton(int r, int c, JPanel panel) {
         JButton button = new JButton();
@@ -91,40 +94,78 @@ public class Board {
         button.addActionListener(e -> {
             button.setBackground(logic.determineColor());
             grid[temp[0]][temp[1]] = 1;
-            if (!checkForSquares(temp[0], temp[1]))
+            int output = checkForSquares(temp[0], temp[1]);
+            if (output == 0) {
                 logic.advanceTurn();
+            } else {
+                for (int i = 0; i <= panelList.size()-1; i++) {
+                    if (output == 1 || output == 5) {
+                        if (panelList.get(i).getR() == r + 1 && panelList.get(i).getC() == c) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
+                    } else if (output == 2 || output == 8) {
+                        if (panelList.get(i).getR() == r - 1 && panelList.get(i).getC() == c) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
+                    } else if (output == 3 || output == 6) {
+                        if (panelList.get(i).getR() == r && panelList.get(i).getC() == c-1) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
+                    } else if (output == 4 || output == 7) {
+                        if (panelList.get(i).getR() == r && panelList.get(i).getC() == c+1) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
+                    }
+                }
+            }
         });
         panel.add(button);
     }
 
-    public boolean checkForSquares(int r, int c) {
+    public int checkForSquares(int r, int c) {
         if (r <= 0) {
+            //top case
             if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1) {
                 System.out.println("found square! v1");
-                return true;
+                return 1;
             }
         } else if (r == grid.length-1) {
+            //bottom case
             if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1) {
                 System.out.println("found square v2");
-                return true;
+                return 2;
             }
         } else if (c == grid.length-1) {
+            //right case
             if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1) {
                 System.out.println("found square v3");
-                return true;
+                return 3;
             }
         } else if (c == 0) {
+            //left case
             if (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1) {
                 System.out.println("found square v4");
-                return true;
+                return 4;
             }
         } else {
-            if ((grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1 && grid[r+1][c] != 3) || (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1 && grid[r-1][c] != 3) ||
-                    (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1 && grid[r][c-1] != 3) || (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1 && grid[r][c+1] != 3)) {
+            //top middle case
+            if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1 && grid[r+1][c] != 3) {
                 System.out.println("found square! v5");
-                return true;
+                return 5;
+                //right case
+            } else if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1 && grid[r][c-1] != 3) {
+                System.out.println("fs v6");
+                return 6;
+                //left case:
+            } else if (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1 && grid[r][c+1] != 3) {
+                System.out.println("fs v7");
+                return 7;
+                //bottom case
+            } else if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1 && grid[r-1][c] != 3) {
+                System.out.println("fs v8");
+                return 8;
             }
         }
-        return false;
+        return 0;
     }
 }
