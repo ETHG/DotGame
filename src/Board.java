@@ -45,6 +45,7 @@ public class Board {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.add(createGrid());
+        addLabelToPane(frame.getContentPane());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setSize(700, 700);
@@ -92,7 +93,7 @@ public class Board {
         temp[0] = r-1;
         temp[1] = c-1;
         button.addActionListener(e -> {
-            button.setBackground(logic.determineColor());
+            button.setBackground(Color.GRAY);
             grid[temp[0]][temp[1]] = 1;
             int output = checkForSquares(temp[0], temp[1]);
             if (output == 0) {
@@ -167,5 +168,11 @@ public class Board {
             }
         }
         return 0;
+    }
+
+
+    public static void addLabelToPane(Container pane) {
+        JLabel turnLabel = new JLabel("Turn: Player");
+        pane.add(turnLabel, BorderLayout.PAGE_END);
     }
 }
