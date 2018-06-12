@@ -173,6 +173,7 @@ public class Board {
 
     public JLabel addLabelToPane(Container pane) {
         JLabel turnLabel = new JLabel("It is " + players[0].getName() + "'s turn.");
+        turnLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
         pane.add(turnLabel, BorderLayout.PAGE_END);
         return  turnLabel;
     }
