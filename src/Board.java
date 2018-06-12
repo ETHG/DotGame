@@ -138,18 +138,25 @@ public class Board {
  //   }
 
     public int checkForSquares(int r, int c) {
-        if (r <= 0 && (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1)) {
+        if (r <= 0) {
             //top case
-            System.out.println("found square! v1");
-            return 1;
-        } else if (r == grid.length-1 && (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1)) {
+            if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1) {
+                System.out.println("found square! v1");
+                return 1;
+            }
+        } else if (r == grid.length-1) {
             //bottom case
-            System.out.println("found square v2");
-            return 2;
-        } else if (c == grid.length-1 && (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1)) {
+            if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1) {
+                System.out.println("found square v2");
+                return 2;
+            }
+
+        } else if (c == grid.length-1) {
             //right case
-            System.out.println("found square v3");
-            return 3;
+            if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1) {
+                System.out.println("found square v3");
+                return 3;
+            }
         } else if (c == 0) {
             //left case
             if (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1) {
