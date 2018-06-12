@@ -44,15 +44,15 @@ public class Board {
         JFrame frame = new JFrame("Dot Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.add(createGrid());
-        addLabelToPane(frame.getContentPane());
+        JLabel turnLabel = addLabelToPane(frame.getContentPane());
+        frame.add(createGrid(turnLabel));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setSize(700, 700);
     }
 
     //Populates the frame w/ panels/etc
-    private JPanel createGrid() {
+    private JPanel createGrid(JLabel turnLabel) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(size, size));
 
@@ -60,7 +60,7 @@ public class Board {
             for (int c = 1; c < size; c++) {
                 if (r%2 == 1) {
                     if (c%2 == 0) {
-                        makeButton(r, c, panel);
+                        makeButton(r, c, panel, turnLabel);
                     } else {
                         JPanel newPanel = new JPanel();
                         panel.add(newPanel);
@@ -71,7 +71,7 @@ public class Board {
                     }
                 } else {
                     if (c%2 == 1) {
-                        makeButton(r, c, panel);
+                        makeButton(r, c, panel, turnLabel);
                     } else {
                         //JPanel newPanel = new JPanel();
                         Panel newCustomPanel = new Panel(r,c);
@@ -87,7 +87,7 @@ public class Board {
     }
 
 
-    public void makeButton(int r, int c, JPanel panel) {
+    public void makeButton(int r, int c, JPanel panel, JLabel turnLabel) {
         JButton button = new JButton();
         final int[] temp = new int[2];
         temp[0] = r-1;
@@ -97,7 +97,7 @@ public class Board {
             grid[temp[0]][temp[1]] = 1;
             int output = checkForSquares(temp[0], temp[1]);
             if (output == 0) {
-                logic.advanceTurn();
+                logic.advanceTurn(turnLabel);
             } else {
                 for (int i = 0; i <= panelList.size()-1; i++) {
                     if (output == 1 || output == 5) {
@@ -171,8 +171,9 @@ public class Board {
     }
 
 
-    public static void addLabelToPane(Container pane) {
-        JLabel turnLabel = new JLabel("Turn: Player");
+    public JLabel addLabelToPane(Container pane) {
+        JLabel turnLabel = new JLabel("It is " + players[0].getName() + "'s turn.");
         pane.add(turnLabel, BorderLayout.PAGE_END);
+        return  turnLabel;
     }
 }
