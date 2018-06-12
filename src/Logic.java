@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class Logic {
@@ -13,8 +14,9 @@ public class Logic {
         return turn;
     }
 
-    public void advanceTurn() {
+    public void advanceTurn(JLabel turnLabel) {
         turn += 1;
+        turnLabel.setText("It is " + players[turn%players.length].getName() + "'s turn.");
     }
 
     //Determines what a given players color is, as set in their object creation.

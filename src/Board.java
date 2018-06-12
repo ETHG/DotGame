@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-
+import java.util.Arrays;
 
 public class Board {
 
@@ -11,6 +11,7 @@ public class Board {
     public int[][] grid;
     private Logic logic;
     private ArrayList<Panel> panelList;
+    //private JPanel[] panelList;
 
 
     public Board(int size, int players) {
@@ -20,6 +21,7 @@ public class Board {
         this.logic = new Logic(this.players);
         this.grid =  new int[size-1][size-1];
         this.panelList = new ArrayList<>();
+        //this.panelList = new JPanel[size];
     }
 
     //Default constructor if size/players are left blank
@@ -42,15 +44,15 @@ public class Board {
     public void init() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.add(createGrid());
-        addLabelToPane(frame.getContentPane());
+        JLabel turnLabel = addLabelToPane(frame.getContentPane());
+        frame.add(createGrid(turnLabel));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setSize(700, 700);
     }
 
     //Populates the frame w/ panels/etc
-    private JPanel createGrid() {
+    private JPanel createGrid(JLabel turnLabel) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(size, size));
 
@@ -58,7 +60,7 @@ public class Board {
             for (int c = 1; c < size; c++) {
                 if (r%2 == 1) {
                     if (c%2 == 0) {
-                        makeButton(r, c, panel);
+                        makeButton(r, c, panel, turnLabel);
                     } else {
                         JPanel newPanel = new JPanel();
                         panel.add(newPanel);
@@ -69,7 +71,7 @@ public class Board {
                     }
                 } else {
                     if (c%2 == 1) {
-                        makeButton(r, c, panel);
+                        makeButton(r, c, panel, turnLabel);
                     } else {
                         Panel newCustomPanel = new Panel(r,c);
                         panel.add(newCustomPanel);
@@ -84,58 +86,41 @@ public class Board {
     }
 
 
-    public void makeButton(int r, int c, JPanel panel) {
+    public void makeButton(int r, int c, JPanel panel, JLabel turnLabel) {
         JButton button = new JButton();
         final int[] temp = new int[2];
         temp[0] = r-1;
         temp[1] = c-1;
         button.addActionListener(e -> {
-            addLabelToPane(frame.getContentPane());
             button.setBackground(Color.GRAY);
             grid[temp[0]][temp[1]] = 1;
             int output = checkForSquares(temp[0], temp[1]);
             if (output == 0) {
-                logic.advanceTurn();
+                logic.advanceTurn(turnLabel);
             } else {
                 for (int i = 0; i <= panelList.size()-1; i++) {
-                    if (output == 1 || output == 5 && (panelList.get(i).getR() == r + 1 && panelList.get(i).getC() == c)) {
-                        panelList.get(i).setBackground(logic.determineColor());
-                        //panelList.get(i).add(createLabel());
-                        //panel.add(createLabel());
-                    } else if (output == 2 || output == 8 && (panelList.get(i).getR() == r - 1 && panelList.get(i).getC() == c)) {
-                        panelList.get(i).setBackground(logic.determineColor());
-                        //panelList.get(i).add(createLabel());
-                        //panel.add(createLabel());
-                    } else if (output == 3 || output == 6 && (panelList.get(i).getR() == r && panelList.get(i).getC() == c-1)) {
-                        panelList.get(i).setBackground(logic.determineColor());
-                        //panelList.get(i).add(createLabel());
-                        //panel.add(createLabel());
-                    } else if (output == 4 || output == 7 && (panelList.get(i).getR() == r && panelList.get(i).getC() == c+1)) {
-                        panelList.get(i).setBackground(logic.determineColor());
-                        //panelList.get(i).add(createLabel());
-                        //panel.add(createLabel());
+                    if (output == 1 || output == 5) {
+                        if (panelList.get(i).getR() == r + 1 && panelList.get(i).getC() == c) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
+                    } else if (output == 2 || output == 8) {
+                        if (panelList.get(i).getR() == r - 1 && panelList.get(i).getC() == c) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
+                    } else if (output == 3 || output == 6) {
+                        if (panelList.get(i).getR() == r && panelList.get(i).getC() == c-1) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
+                    } else if (output == 4 || output == 7) {
+                        if (panelList.get(i).getR() == r && panelList.get(i).getC() == c+1) {
+                            panelList.get(i).setBackground(logic.determineColor());
+                        }
                     }
                 }
             }
         });
         panel.add(button);
     }
-
-//    public JTextArea createLabel() {
-//        //JLabel label = new JLabel();
-//        JTextArea textArea = new JTextArea();
-//        textArea.setOpaque(false);
-//
-//        for (int j = 0; j < players.length; j++) {
-//            if (logic.getTurn()%players.length == players[j].getId()) {
-//                //label.setText("" + players[j].getName().charAt(0));
-//                textArea.setText("" + players[j].getName().charAt(0));
-//            }
-//
-//        }
-//        return textArea;
-//        //return label;
- //   }
 
     public int checkForSquares(int r, int c) {
         if (r <= 0) {
@@ -150,7 +135,6 @@ public class Board {
                 System.out.println("found square v2");
                 return 2;
             }
-
         } else if (c == grid.length-1) {
             //right case
             if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1) {
@@ -186,14 +170,9 @@ public class Board {
     }
 
 
-    public void addLabelToPane(Container pane) {
-        String name = "";
-        for (int i = 0; i < playerCount; i++) {
-            if (logic.getTurn()%playerCount == players[i].getId()) {
-                name = players[i].getName();
-            }
-        }
-        JLabel turnLabel = new JLabel("Turn: " + name);
+    public JLabel addLabelToPane(Container pane) {
+        JLabel turnLabel = new JLabel("It is " + players[0].getName() + "'s turn.");
         pane.add(turnLabel, BorderLayout.PAGE_END);
+        return  turnLabel;
     }
 }
