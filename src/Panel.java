@@ -17,4 +17,5 @@ public class Panel extends JPanel{
     public int getC() {
         return c;
     }
+
 }

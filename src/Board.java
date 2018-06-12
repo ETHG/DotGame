@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class Board {
 
@@ -11,7 +11,6 @@ public class Board {
     public int[][] grid;
     private Logic logic;
     private ArrayList<Panel> panelList;
-    //private JPanel[] panelList;
 
 
     public Board(int size, int players) {
@@ -21,7 +20,6 @@ public class Board {
         this.logic = new Logic(this.players);
         this.grid =  new int[size-1][size-1];
         this.panelList = new ArrayList<>();
-        //this.panelList = new JPanel[size];
     }
 
     //Default constructor if size/players are left blank
@@ -40,8 +38,8 @@ public class Board {
     }
 
     //Creates the frame;
+    JFrame frame = new JFrame("Dot Game");
     public void init() {
-        JFrame frame = new JFrame("Dot Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.add(createGrid());
@@ -73,7 +71,6 @@ public class Board {
                     if (c%2 == 1) {
                         makeButton(r, c, panel);
                     } else {
-                        //JPanel newPanel = new JPanel();
                         Panel newCustomPanel = new Panel(r,c);
                         panel.add(newCustomPanel);
                         panelList.add(newCustomPanel);
@@ -93,6 +90,7 @@ public class Board {
         temp[0] = r-1;
         temp[1] = c-1;
         button.addActionListener(e -> {
+            addLabelToPane(frame.getContentPane());
             button.setBackground(Color.GRAY);
             grid[temp[0]][temp[1]] = 1;
             int output = checkForSquares(temp[0], temp[1]);
@@ -100,22 +98,22 @@ public class Board {
                 logic.advanceTurn();
             } else {
                 for (int i = 0; i <= panelList.size()-1; i++) {
-                    if (output == 1 || output == 5) {
-                        if (panelList.get(i).getR() == r + 1 && panelList.get(i).getC() == c) {
-                            panelList.get(i).setBackground(logic.determineColor());
-                        }
-                    } else if (output == 2 || output == 8) {
-                        if (panelList.get(i).getR() == r - 1 && panelList.get(i).getC() == c) {
-                            panelList.get(i).setBackground(logic.determineColor());
-                        }
-                    } else if (output == 3 || output == 6) {
-                        if (panelList.get(i).getR() == r && panelList.get(i).getC() == c-1) {
-                            panelList.get(i).setBackground(logic.determineColor());
-                        }
-                    } else if (output == 4 || output == 7) {
-                        if (panelList.get(i).getR() == r && panelList.get(i).getC() == c+1) {
-                            panelList.get(i).setBackground(logic.determineColor());
-                        }
+                    if (output == 1 || output == 5 && (panelList.get(i).getR() == r + 1 && panelList.get(i).getC() == c)) {
+                        panelList.get(i).setBackground(logic.determineColor());
+                        //panelList.get(i).add(createLabel());
+                        //panel.add(createLabel());
+                    } else if (output == 2 || output == 8 && (panelList.get(i).getR() == r - 1 && panelList.get(i).getC() == c)) {
+                        panelList.get(i).setBackground(logic.determineColor());
+                        //panelList.get(i).add(createLabel());
+                        //panel.add(createLabel());
+                    } else if (output == 3 || output == 6 && (panelList.get(i).getR() == r && panelList.get(i).getC() == c-1)) {
+                        panelList.get(i).setBackground(logic.determineColor());
+                        //panelList.get(i).add(createLabel());
+                        //panel.add(createLabel());
+                    } else if (output == 4 || output == 7 && (panelList.get(i).getR() == r && panelList.get(i).getC() == c+1)) {
+                        panelList.get(i).setBackground(logic.determineColor());
+                        //panelList.get(i).add(createLabel());
+                        //panel.add(createLabel());
                     }
                 }
             }
@@ -123,25 +121,35 @@ public class Board {
         panel.add(button);
     }
 
+//    public JTextArea createLabel() {
+//        //JLabel label = new JLabel();
+//        JTextArea textArea = new JTextArea();
+//        textArea.setOpaque(false);
+//
+//        for (int j = 0; j < players.length; j++) {
+//            if (logic.getTurn()%players.length == players[j].getId()) {
+//                //label.setText("" + players[j].getName().charAt(0));
+//                textArea.setText("" + players[j].getName().charAt(0));
+//            }
+//
+//        }
+//        return textArea;
+//        //return label;
+ //   }
+
     public int checkForSquares(int r, int c) {
-        if (r <= 0) {
+        if (r <= 0 && (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1)) {
             //top case
-            if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1) {
-                System.out.println("found square! v1");
-                return 1;
-            }
-        } else if (r == grid.length-1) {
+            System.out.println("found square! v1");
+            return 1;
+        } else if (r == grid.length-1 && (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1)) {
             //bottom case
-            if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1) {
-                System.out.println("found square v2");
-                return 2;
-            }
-        } else if (c == grid.length-1) {
+            System.out.println("found square v2");
+            return 2;
+        } else if (c == grid.length-1 && (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1)) {
             //right case
-            if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1) {
-                System.out.println("found square v3");
-                return 3;
-            }
+            System.out.println("found square v3");
+            return 3;
         } else if (c == 0) {
             //left case
             if (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1) {
@@ -171,8 +179,14 @@ public class Board {
     }
 
 
-    public static void addLabelToPane(Container pane) {
-        JLabel turnLabel = new JLabel("Turn: Player");
+    public void addLabelToPane(Container pane) {
+        String name = "";
+        for (int i = 0; i < playerCount; i++) {
+            if (logic.getTurn()%playerCount == players[i].getId()) {
+                name = players[i].getName();
+            }
+        }
+        JLabel turnLabel = new JLabel("Turn: " + name);
         pane.add(turnLabel, BorderLayout.PAGE_END);
     }
 }

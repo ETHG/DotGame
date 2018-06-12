@@ -9,7 +9,6 @@ public class Logic {
         turn = 0;
     }
 
-    //Calculates whos turn it is, adding one to advance the turn, unless the player gets a point.
     public int getTurn() {
         return turn;
     }
