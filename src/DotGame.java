@@ -27,6 +27,7 @@ public class DotGame {
         return parsedSizeInt;
     }
 
+    //Allows it to work on all platforms
     public static void setLookAndFeel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
     }

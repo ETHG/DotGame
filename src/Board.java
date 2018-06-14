@@ -11,6 +11,7 @@ public class Board {
     public int[][] grid;
     private Logic logic;
     private ArrayList<Panel> panelList;
+    //private JPanel[] panelList;
 
 
     public Board(int size, int players) {
@@ -20,6 +21,7 @@ public class Board {
         this.logic = new Logic(this.players);
         this.grid =  new int[size-1][size-1];
         this.panelList = new ArrayList<>();
+        //this.panelList = new JPanel[size];
     }
 
     //Default constructor if size/players are left blank
@@ -38,8 +40,8 @@ public class Board {
     }
 
     //Creates the frame;
-    JFrame frame = new JFrame("Dot Game");
     public void init() {
+        JFrame frame = new JFrame("Dot Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         JLabel turnLabel = addLabelToPane(frame.getContentPane());
@@ -58,9 +60,6 @@ public class Board {
 
         for (int r = 1; r < size; r++) {
             for (int c = 1; c < size; c++) {
-                if ((r == 1 && (c == 1 || c == 3 || c ==5)) || (c == 1 && (r == 1 || r == 3 || r == 5)))
-                    grid[r-1][c-1] = 3;
-
                 if (r%2 == 1) {
                     if (c%2 == 0) {
                         makeButton(r, c, panel, turnLabel);
@@ -68,7 +67,6 @@ public class Board {
                         JPanel newPanel = new JPanel();
                         panel.add(newPanel);
                         newPanel.setBackground(Color.BLACK);
-
                         if (r <= grid.length-1 && c <= grid.length-1) {
                             grid[r][c] = 2;
                         }
@@ -77,6 +75,7 @@ public class Board {
                     if (c%2 == 1) {
                         makeButton(r, c, panel, turnLabel);
                     } else {
+                        //JPanel newPanel = new JPanel();
                         Panel newCustomPanel = new Panel(r,c);
                         panel.add(newCustomPanel);
                         panelList.add(newCustomPanel);
@@ -121,12 +120,7 @@ public class Board {
                         }
                     }
                 }
-                players[logic.getTurn()%playerCount].addPoint();
             }
-//            for (int i = 0; i < grid.length; i++)
-//                System.out.println( Arrays.toString(grid[i]));
-//            System.out.println("");
-            if (isEndGame()) {endGame();}
         });
         panel.add(button);
     }
@@ -152,27 +146,30 @@ public class Board {
             }
         } else if (c == 0) {
             //left case
-            if (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1) {
+            if (grid[r + 1][c + 1] == 1 && grid[r - 1][c + 1] == 1 && grid[r][c + 2] == 1) {
                 System.out.println("found square v4");
                 return 4;
             }
         } else {
-            //top middle case
-            if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1 && grid[r+1][c] != 3) {
-                System.out.println("found square! v5");
-                return 5;
-                //right case
-            } else if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1 && grid[r][c-1] != 3) {
-                System.out.println("fs v6");
-                return 6;
-                //left case:
-            } else if (grid[r+1][c+1] == 1 && grid[r-1][c+1] == 1 && grid[r][c+2] == 1 && grid[r][c+1] != 3) {
-                System.out.println("fs v7");
-                return 7;
-                //bottom case
-            } else if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1 && grid[r-1][c] != 3) {
-                System.out.println("fs v8");
-                return 8;
+            if (r % 2 == 0) {
+                if (grid[r + 1][c - 1] == 1 && grid[r + 1][c + 1] == 1 && grid[r + 2][c] == 1 && grid[r + 1][c] != 3) {
+                    System.out.println("found square! v5");
+                    return 5;
+                }
+                if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1 && grid[r-1][c] != 3) {
+                    System.out.println("fs v8");
+                    return 8;
+                }
+            } else {
+                if (grid[r - 1][c - 1] == 1 && grid[r + 1][c - 1] == 1 && grid[r][c - 2] == 1 && grid[r][c - 1] != 3) {
+                    System.out.println("fs v6");
+                    return 6;
+                }
+
+                if (grid[r + 1][c + 1] == 1 && grid[r - 1][c + 1] == 1 && grid[r][c + 2] == 1 && grid[r][c + 1] != 3) {
+                    System.out.println("fs v7");
+                    return 7;
+                }
             }
         }
         return 0;
@@ -184,32 +181,5 @@ public class Board {
         turnLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
         pane.add(turnLabel, BorderLayout.PAGE_END);
         return  turnLabel;
-    }
-
-    public boolean isEndGame() {
-        for (int r = 0; r < grid.length; r++)
-            for (int c = 0; c < grid.length; c++) {
-                if (grid[r][c] == 0)
-                    return false;
-            }
-        return true;
-    }
-
-    public void endGame() {
-        frame.remove(0);
-        Player max = new Player("random", 100);
-        for (int i = 0; i < playerCount; i++) {
-            if (max.getPoints() < players[i].getPoints()) {
-                max = players[i];
-                //System.out.println("" + players[i].getName());
-            } else if (max.getPoints() == players[i].getPoints())
-                System.out.println("its a tie I guess");
-//            for (int a = 0; a < grid.length; a++)
-//                System.out.println( Arrays.toString(grid[a]));
-//            System.out.println("");
-
-        }
-        frame.add(new JLabel("Player " + max.getName() + " wins with " + max.getPoints() + " points!"));
-
     }
 }
