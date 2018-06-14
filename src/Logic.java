@@ -21,12 +21,8 @@ public class Logic {
 
     //Determines what a given players color is, as set in their object creation.
     public Color determineColor() {
-        Color color = new Color(Color.OPAQUE);
-        for (int i = 0; i < players.length; i++) {
-            if (turn%players.length == players[i].getId()) {
-                color = players[i].getPlayerColor();
-            }
-        }
+        Color color = players[turn%players.length].getPlayerColor();
+
         return color;
     }
 }

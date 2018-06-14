@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class Panel extends JPanel{
+public class Panel extends JPanel {
     private int r;
     private int c;
 
