@@ -25,13 +25,6 @@ public class Board {
         //this.panelList = new JPanel[size];
     }
 
-    //Default constructor if size/players are left blank
-    public Board() {
-        playerCount = 2;
-        size = 10;
-        players = new Player[playerCount];
-    }
-
     //Populates the array of players with player objects
     public void initPlayers() {
         for (int i = 0; i < playerCount; i++) {
@@ -92,7 +85,7 @@ public class Board {
         return panel;
     }
 
-
+    //Makes things happen on button/pannel press
     public void makeButton(int r, int c, JPanel panel, JLabel turnLabel) {
         JButton button = new JButton();
         final int[] temp = new int[2];
@@ -137,14 +130,12 @@ public class Board {
                     System.out.println("check true");
                     endGame();
                 }
-//            for (int a = 0; a < grid.length; a++)
-//                System.out.println( Arrays.toString(grid[a]));
-//            System.out.println("");
             }
         });
         panel.add(button);
     }
 
+    //Checks for squares on button press
     public ArrayList<Integer> checkForSquares(int r, int c) {
         ArrayList<Integer> squaresFound = new ArrayList<>();
         if (r <= 0) {
@@ -204,6 +195,7 @@ public class Board {
         return squaresFound;
     }
 
+    //Shows what turn it is
     public JLabel addLabelToPane(Container pane) {
         JLabel turnLabel = new JLabel("It is " + players[0].getName() + "'s turn.");
         turnLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
@@ -211,6 +203,7 @@ public class Board {
         return  turnLabel;
     }
 
+    //Checks if all squares have been pressed, so shouuld check to see who won
     public boolean isEndGame() {
         for (int r = 0; r < grid.length; r++)
             for (int c = 0; c < grid.length; c++) {
@@ -221,6 +214,7 @@ public class Board {
         return true;
     }
 
+    //Ends the game, tallys points, etc.
     public void endGame() {
         Player max = new Player("random", 100);
         for (int i = 0; i < playerCount; i++) {
@@ -236,8 +230,18 @@ public class Board {
             JOptionPane.showMessageDialog(null, "Player " + max.getName() + " wins with " + max.getPoints() + " points!","Message", JOptionPane.INFORMATION_MESSAGE);
         int reply = JOptionPane.showConfirmDialog(null, "Want to play a gain? ", "Play again?", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-//            String[] arguments = new String[] {"123"};
-//            DotGame.main(arguments);  todo handel exceptions thrown by this
+            try {
+                String[] arguments = new String[] {"123"};
+                DotGame.main(arguments);
+            } catch (UnsupportedLookAndFeelException e) {
+                System.out.println("Couldn't play again because of UnSupportedL&F Exception");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Couldn't play again because of ClassNotFoundException");
+            } catch (InstantiationException e) {
+                System.out.println("Couldn't play again because of InstationException");
+            } catch (IllegalAccessException e) {
+                System.out.println("Couldn't play again because of IllegalAccessException");
+            }
         } else {
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         }
