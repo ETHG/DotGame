@@ -12,8 +12,6 @@ public class Board {
     public int[][] grid;
     private Logic logic;
     private ArrayList<Panel> panelList;
-    //private JPanel[] panelList;
-
 
     public Board(int size, int players) {
         this.playerCount = players;
@@ -22,7 +20,6 @@ public class Board {
         this.logic = new Logic(this.players);
         this.grid =  new int[size-1][size-1];
         this.panelList = new ArrayList<>();
-        //this.panelList = new JPanel[size];
     }
 
     //Populates the array of players with player objects
@@ -36,13 +33,16 @@ public class Board {
     //Creates the frame;
     JFrame frame;
     public void init() {
-        frame  = new JFrame("Dot Game");
+        frame = new JFrame("Dot Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        //To be used later to show what players turn it is.
         JLabel turnLabel = addLabelToPane(frame.getContentPane());
+        //Populates grid based on method below
         frame.add(createGrid(turnLabel));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        //sets size and location.
         frame.setSize(700, 700);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
@@ -53,11 +53,10 @@ public class Board {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(size, size));
 
+        //Creates black corner peices, middle peices, and clickable butons in the correct order
         for (int r = 1; r < size; r++) {
             for (int c = 1; c < size; c++) {
                 if (r%2 == 1) {
-//                    if ((r == 1 && (c == 1 || c == 3 || c ==5)) || (c == 1 && (r == 1 || r == 3 || r == 5)))
-//                        grid[r-1][c-1] = 3;
                     if (c%2 == 0) {
                         makeButton(r, c, panel, turnLabel);
                     } else {
@@ -72,7 +71,6 @@ public class Board {
                     if (c%2 == 1) {
                         makeButton(r, c, panel, turnLabel);
                     } else {
-                        //JPanel newPanel = new JPanel();
                         Panel newCustomPanel = new Panel(r,c);
                         panel.add(newCustomPanel);
                         panelList.add(newCustomPanel);
@@ -89,14 +87,17 @@ public class Board {
     public void makeButton(int r, int c, JPanel panel, JLabel turnLabel) {
         JButton button = new JButton();
         final int[] temp = new int[2];
+        //Below variables because static r and c cant be used in the lambda.
         temp[0] = r-1;
         temp[1] = c-1;
         button.addActionListener(e -> {
             if (grid[temp[0]][temp[1]] != 0) {
                 //Does nothing bc if its presed when its already been pressed ignore
             } else {
+                //Sets color to gray so people can see, sets array number to one so computer can determine.
                 button.setBackground(Color.GRAY);
                 grid[temp[0]][temp[1]] = 1;
+                //Creates array and then checks for array to determine when to fill a color, and change the array.
                 ArrayList<Integer> output = checkForSquares(temp[0], temp[1]);
                 if (output.size() == 0) {
                     logic.advanceTurn(turnLabel);
@@ -125,9 +126,8 @@ public class Board {
                     }
                     players[logic.getTurn()%playerCount].addPoint();
                 }
-                System.out.println("checking");
+                //Checks to see if all locations on the board have been clicked, if they had runs endgame method.
                 if (isEndGame()) {
-                    System.out.println("check true");
                     endGame();
                 }
             }
@@ -135,60 +135,44 @@ public class Board {
         panel.add(button);
     }
 
-    //Checks for squares on button press
+    //Checks for complete squares on button press
     public ArrayList<Integer> checkForSquares(int r, int c) {
         ArrayList<Integer> squaresFound = new ArrayList<>();
         if (r <= 0) {
             //top case
             if (grid[r+1][c-1] == 1 && grid[r+1][c+1] == 1 && grid[r+2][c] == 1) {
-                System.out.println("found square! v1");
                 squaresFound.add(1);
-                //return 1;
             }
         } else if (r == grid.length-1) {
             //bottom case
             if (grid[r-1][c-1] == 1 && grid[r-1][c+1] == 1 && grid[r-2][c] == 1) {
-                System.out.println("found square v2");
                 squaresFound.add(2);
-                //return 2;
             }
         } else if (c == grid.length-1) {
             //right case
             if (grid[r-1][c-1] == 1 && grid[r+1][c-1] == 1 && grid[r][c-2] == 1) {
-                System.out.println("found square v3");
                 squaresFound.add(3);
-                //return 3;
             }
         } else if (c == 0) {
             //left case
             if (grid[r + 1][c + 1] == 1 && grid[r - 1][c + 1] == 1 && grid[r][c + 2] == 1) {
-                System.out.println("found square v4");
                 squaresFound.add(4);
-                //return 4;
             }
         } else {
             if (r % 2 == 0) {
                 if (grid[r + 1][c - 1] == 1 && grid[r + 1][c + 1] == 1 && grid[r + 2][c] == 1 && grid[r + 1][c] != 3) {
-                    System.out.println("found square! v5");
                     squaresFound.add(5);
-                    //return 5;
                 }
                 if (grid[r - 1][c - 1] == 1 && grid[r - 1][c + 1] == 1 && grid[r - 2][c] == 1 && grid[r - 1][c] != 3) {
-                    System.out.println("fs v8");
                     squaresFound.add(8);
-                    //return 8;
                 }
             } else {
                 if (grid[r - 1][c - 1] == 1 && grid[r + 1][c - 1] == 1 && grid[r][c - 2] == 1 && grid[r][c - 1] != 3) {
-                    System.out.println("fs v6");
                     squaresFound.add(6);
-                    //return 6;
                 }
 
                 if (grid[r + 1][c + 1] == 1 && grid[r - 1][c + 1] == 1 && grid[r][c + 2] == 1 && grid[r][c + 1] != 3) {
-                    System.out.println("fs v7");
                     squaresFound.add(7);
-                    //return 7;
                 }
             }
         }
@@ -216,31 +200,29 @@ public class Board {
 
     //Ends the game, tallys points, etc.
     public void endGame() {
+        //Checks which player had the most point
         Player max = new Player("random", 100);
         for (int i = 0; i < playerCount; i++) {
             if (max.getPoints() < players[i].getPoints()) {
                 max = players[i];
-                //System.out.println("" + players[i].getName());
-            } else if (max.getPoints() == players[i].getPoints()) //Todo tie dosent work quite right bc its not evaluated on completeion
+            } else if (max.getPoints() == players[i].getPoints())
                 max = new Player("tie", 1000);
         }
+        //Displays and a text book which player had the most points
         if (max.getId() == 1000) {
             JOptionPane.showMessageDialog(null, "It's a tie!","Message", JOptionPane.INFORMATION_MESSAGE);
         } else
             JOptionPane.showMessageDialog(null, "Player " + max.getName() + " wins with " + max.getPoints() + " points!","Message", JOptionPane.INFORMATION_MESSAGE);
+        //Prompts user asking if they want to play again
         int reply = JOptionPane.showConfirmDialog(null, "Want to play a gain? ", "Play again?", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             try {
                 String[] arguments = new String[] {"123"};
                 DotGame.main(arguments);
             } catch (UnsupportedLookAndFeelException e) {
-                System.out.println("Couldn't play again because of UnSupportedL&F Exception");
             } catch (ClassNotFoundException e) {
-                System.out.println("Couldn't play again because of ClassNotFoundException");
             } catch (InstantiationException e) {
-                System.out.println("Couldn't play again because of InstationException");
             } catch (IllegalAccessException e) {
-                System.out.println("Couldn't play again because of IllegalAccessException");
             }
         } else {
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
